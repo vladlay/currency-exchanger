@@ -42,6 +42,7 @@ class ExchDirectionController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'time' => date('H:i:s')
         ]);
     }
 
@@ -69,7 +70,6 @@ class ExchDirectionController extends Controller
         $currencies = Currency::getCurrencies();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->id]);
             return $this->redirect(['index']);
         }
 
@@ -92,9 +92,7 @@ class ExchDirectionController extends Controller
         $currencies = Currency::getCurrencies();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->id]);
             return $this->redirect(['index']);
-
         }
 
         return $this->render('update', [

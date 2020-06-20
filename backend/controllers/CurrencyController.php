@@ -47,6 +47,31 @@ class CurrencyController extends Controller
         ]);
     }
 
+    public function actionCorrectReserve()
+    {
+        $model_template = new Currency();
+        $currenciesCodes = Currency::getCurrenciesCodes();
+
+        if (Yii::$app->request->post()) {
+            $id = Yii::$app->request->post('Currency')['id'];
+            $reserve = Yii::$app->request->post('Currency')['reserve'];
+
+            $model = $this->findModel($id);
+
+            $model->reserve += $reserve;
+
+            $model->reserve = $model->reserve > 0 ? $model->reserve : 0;
+            $model->save(false);   
+        }
+        
+        return $this->render('correct-reserve', 
+            compact(
+                'model_template',
+                'currenciesCodes'
+            )
+        );
+    }
+
     /**
      * Displays a single Currency model.
      * @param integer $id
@@ -127,7 +152,7 @@ class CurrencyController extends Controller
 
         if (file_exists($findedModel->icon)) {
             fileHelper::unlink($findedModel->icon);
-        } // else echo 'Файла НЕТ!!';
+        }
 
         $findedModel->delete();
 
