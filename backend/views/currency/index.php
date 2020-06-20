@@ -1,8 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\grid\GridView;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\CurrencySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,6 +11,7 @@ use yii\widgets\Pjax;
 $this->title = 'Currencies';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="currency-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -29,20 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
+            'code',
             [
                 'attribute' => 'icon',
-                'value' => fn($model) => ('http://diploma.net/' . $model->icon),
-                'format' => ['image', ['height' => '50']],
-                // 'options' => ['height' => '10'],    
+                'value' => fn($model) => ('http://diploma.net/uploads/' . $model->icon),
+                'format' => ['image', ['height' => '50']],  
             ],
-            'icon',
-            'foo',
             
+            [
+                'attribute' => 'icon',
+                'label' => 'Адрес иконки'
+            ],
+            'reserve',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+            ['class' => 'common\classes\MyActionColumn'],
+        ]
     ]); ?>
-
     <?php Pjax::end(); ?>
-
+    
 </div>
