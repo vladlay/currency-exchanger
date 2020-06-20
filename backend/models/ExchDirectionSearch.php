@@ -17,9 +17,19 @@ class ExchDirectionSearch extends ExchDirection
     public function rules()
     {
         return [
-            [['id', 'rate_to'], 'integer'],
-            [['give_currency', 'receive_currency', 'status'], 'safe'],
-            [['rate_from'], 'number'],
+            [['id'], 'integer'],
+            [['from_currency', 'to_currency', 'status'], 'safe'],
+            [
+                [
+                    'rate_from', 
+                    'rate_to', 
+                    'min_amount_from', 
+                    'min_amount_to', 
+                    'max_amount_from',
+                    'max_amount_to'
+                ], 
+                'number'
+            ],
         ];
     }
 
@@ -64,8 +74,8 @@ class ExchDirectionSearch extends ExchDirection
             'rate_to' => $this->rate_to,
         ]);
 
-        $query->andFilterWhere(['like', 'give_currency', $this->give_currency])
-            ->andFilterWhere(['like', 'receive_currency', $this->receive_currency])
+        $query->andFilterWhere(['like', 'from_currency', $this->from_currency])
+            ->andFilterWhere(['like', 'to_currency', $this->to_currency])
             ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
