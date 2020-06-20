@@ -1,8 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\grid\GridView;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ExchDirectionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,6 +11,7 @@ use yii\widgets\Pjax;
 $this->title = 'Exch Directions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="exch-direction-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -30,23 +32,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             [
-                'attribute' => 'give_currency',
-                'value' => 'currency.name',
+                'attribute' => 'from_currency',
+                'value' => 'fromCurrency.name',
             ],
             [
-                'attribute' => 'receive_currency',
+                'attribute' => 'to_currency',
                 'value' => 'receiveCurrency.name',
             ],
-            
-            // 'receive_currency',
             'status',
             'rate_from',
             'rate_to',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'common\classes\MyActionColumn'],
         ],
     ]); ?>
 
     <?php Pjax::end(); ?>
-
 </div>

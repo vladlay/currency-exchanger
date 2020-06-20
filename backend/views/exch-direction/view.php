@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Exch Directions', 'url' => ['index
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+
 <div class="exch-direction-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -30,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'give_currency',
-            'receive_currency',
+            'from_currency',
+            'to_currency',
             'status',
             'rate_from',
             'rate_to',
