@@ -1,10 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ListView;
-use yii\grid\GridView;
-
 use yii\widgets\Pjax;
+use yii\grid\GridView;
+use yii\widgets\ListView;
+
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\ExchOrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,6 +12,7 @@ use yii\widgets\Pjax;
 $this->title = 'Exch Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="exch-order-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -27,18 +28,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            
+
+            ['class' => 'yii\grid\CheckboxColumn'],
+
             'id',
             'date',
-            'description',
             'rate',
             'from_account',
             'to_account',
             'person',
             'status',
+            'ip_address',
             
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'common\classes\MyActionColumn'],
+            
         ],
     ]); ?>
 
