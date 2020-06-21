@@ -17,9 +17,8 @@ class ExchOrderSearch extends ExchOrder
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['date', 'description', 'from_account', 'to_account', 'person', 'status'], 'safe'],
-            [['rate'], 'number'],
+            [['id', 'phone_number'], 'integer'],
+            [['date', 'rate', 'from_currency', 'to_currency', 'from_amount', 'to_amount', 'from_account', 'to_account', 'person', 'email', 'status', 'update_date', 'ip_address'], 'safe'],
         ];
     }
 
@@ -47,6 +46,13 @@ class ExchOrderSearch extends ExchOrder
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            // меняет порядок записей на обратный   
+            'sort' => [
+                'defaultOrder' => ['id' => SORT_DESC],
+                'attributes' => [
+                    'id',
+                ],
+            ],
         ]);
 
         $this->load($params);
@@ -59,16 +65,24 @@ class ExchOrderSearch extends ExchOrder
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'rate' => $this->rate,
+                'id' => $this->id])
+            ->andFilterWhere([
+                'phone_number' => $this->phone_number,
         ]);
 
         $query->andFilterWhere(['like', 'date', $this->date])
-            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'rate', $this->rate])
+            ->andFilterWhere(['like', 'from_currency', $this->from_currency])
+            ->andFilterWhere(['like', 'to_currency', $this->to_currency])
+            ->andFilterWhere(['like', 'from_amount', $this->from_amount])
+            ->andFilterWhere(['like', 'to_amount', $this->to_amount])
             ->andFilterWhere(['like', 'from_account', $this->from_account])
             ->andFilterWhere(['like', 'to_account', $this->to_account])
             ->andFilterWhere(['like', 'person', $this->person])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'status', $this->status])
+            ->andFilterWhere(['like', 'update_date', $this->update_date])
+            ->andFilterWhere(['like', 'ip_address', $this->ip_address]);
 
         return $dataProvider;
     }

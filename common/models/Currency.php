@@ -12,6 +12,8 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property string $name
  * @property string $icon
+ * @property string $code
+ * @property float $reserve
  */
 class Currency extends \yii\db\ActiveRecord
 {
@@ -38,6 +40,8 @@ class Currency extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 50],
             [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             [['icon'], 'string', 'max' => 300],
+            [['code'], 'string', 'max' => 30],
+            [['reserve'], 'number'],
         ];
     }
 
@@ -51,6 +55,8 @@ class Currency extends \yii\db\ActiveRecord
             'name' => 'Название',
             'icon' => 'Иконка',
             'imageFile' => 'Иконка',
+            'code' => 'Код валюты',
+            'reserve' => "Резерв"
         ];
     }
 
@@ -73,15 +79,18 @@ class Currency extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function getCurrencies() {
+    public static function getCurrencies() 
+    {
         return ArrayHelper::map(Currency::find()->all(), 'id', 'name');
     }
 
-    public function getFoo() {
-        return '777';
+    public static function getCurrenciesCodes() 
+    {
+        return ArrayHelper::map(Currency::find()->all(), 'id', 'code');
     }
 
-    // public function getExchDirections() {
-    //     return $this->hasMany(ExchDirection::className());
-    // }
+    public function getIcons() 
+    {
+        return ArrayHelper::map(Currency::find()->all(), 'code', 'icon');
+    }
 }

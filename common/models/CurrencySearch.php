@@ -18,7 +18,9 @@ class CurrencySearch extends Currency
     {
         return [
             [['id'], 'integer'],
+            [['reserve'], 'number'],
             [['name', 'icon'], 'safe'],
+            [['code'], 'string', 'max' => 30]
         ];
     }
 
@@ -59,9 +61,12 @@ class CurrencySearch extends Currency
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            // 'code' => $this->code,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'reserve', $this->reserve]);;
 
         return $dataProvider;
     }
