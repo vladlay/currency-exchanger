@@ -1,6 +1,9 @@
 html,
 body {
     height: 100%;
+    font-family: 'TTNorms';
+    /* мой стиль */
+    background: #fafafa;
 }
 
 .wrap {
@@ -118,3 +121,161 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+/* МОИ СТИЛИ */
+/* .flex-container {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+} */
+
+/* .left {
+    display: flex;
+}
+
+.logo {
+    display: flex;
+} */
+
+/* #logo_img {
+    height: auto;
+    width: auto;
+} */
+
+.logo_word {
+    color: #0000EE;
+}
+
+/* .menu {
+    display: flex;
+} */
+
+ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* .right {
+    display: flex;
+} */
+
+.menu-link {
+    padding: 8px;
+    color: #000;
+    font-weight: 500;
+    
+}
+
+.menu-link:hover {
+    color: #0000EE;
+    padding: 8px;
+    text-decoration: none;
+}
+
+.content-inner {
+    position: relative;
+    background: #fff;
+    /* border-radius: 2px;
+    -webkit-border-radius: 2px; */
+    /* box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .08); */
+    padding: 24px 24px 32px;
+    /* font-size: 0; */
+}
+
+.icon {
+    height: 35px;
+}
+
+.icon_in_form {
+    height: 20px;
+    margin-right: -12px;
+}
+
+label {
+    margin: 0;
+}
+
+label svg {
+    opacity: 0;
+}
+
+input:checked + label svg {
+    opacity: 1;
+    transition: opacity .6s;
+}
+
+input + label {
+    border: 1px solid transparent
+}
+
+input + label:hover {
+    border: 1px solid #bdcfff;
+    transition: border .3s;
+}
+/* .check:checked {
+    opacity: 1;
+} */
+
+
+input:checked + span[class="check"] {
+    opacity: 1;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.currency_label {
+    /* position: absolute; */
+    margin: 0 0 0 5%;
+}
+
+input:checked + label {
+    background: #f0f5ff;
+    border: 1px solid transparent
+}
+
+.course {
+    color: #0000EE;
+}
+
+.check_img {
+    position: absolute;
+    right: 23px;
+}
+
+input[name="ExchOrder[to_currency]"]:checked + label .reserve {
+    padding-right: 30px;
+    transition: padding-right .3s;
+}
+
+.from_to-amount {
+    position: relative;
+}
+
+.right-block input {
+   background: #f1f2f5;
+
+}
+
+.from_to-amount-icon {
+    position: absolute;
+    top: 30px;
+    /* padding-top: 10px; */
+    right: 23px;
+}
+
+.bg-grey {
+    background: #f1f2f5;
+}
+
+.color-main {
+    color: #3413fd;
+}
+
+.help-block {
+    color: red;
+}
+
