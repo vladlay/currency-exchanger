@@ -31,12 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'date',
-            'description',
             'rate',
+            'from_currency',
+            'to_currency',
+            'from_amount',
+            'to_amount',
             'from_account',
             'to_account',
             'person',
+            'email:email',
             'status',
+            'update_date',
+            'ip_address',
         ],
     ]) ?>
 

@@ -14,9 +14,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'date')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'rate')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'rate')->textInput() ?>
+    <?= $form->field($model, 'from_currency')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'to_currency')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'from_amount')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'to_amount')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'from_account')->textInput(['maxlength' => true]) ?>
 
@@ -24,7 +30,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'person')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'update_date')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'ip_address')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

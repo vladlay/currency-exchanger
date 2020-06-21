@@ -22,17 +22,29 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'date') ?>
 
-    <?= $form->field($model, 'description') ?>
-
     <?= $form->field($model, 'rate') ?>
 
-    <?= $form->field($model, 'from_account') ?>
+    <?= $form->field($model, 'from_currency') ?>
+
+    <?= $form->field($model, 'to_currency') ?>
+
+    <?php // echo $form->field($model, 'from_amount') ?>
+
+    <?php // echo $form->field($model, 'to_amount') ?>
+
+    <?php // echo $form->field($model, 'from_account') ?>
 
     <?php // echo $form->field($model, 'to_account') ?>
 
     <?php // echo $form->field($model, 'person') ?>
 
+    <?php // echo $form->field($model, 'email') ?>
+
     <?php // echo $form->field($model, 'status') ?>
+
+    <?php // echo $form->field($model, 'update_date') ?>
+
+    <?php // echo $form->field($model, 'ip_address') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

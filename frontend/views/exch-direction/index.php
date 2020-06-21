@@ -14,8 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <!-- <h1><?php // Html::encode($this->title) ?></h1> -->
 
-    
-
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -25,9 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'summary' => false,
 
         'columns' => [
-            // ['class' => 'yii\grid\SerialColumn'],
-
-            // 'id',
             [
                 'attribute' => 'give_currency',
                 'value' => 'currency.name',
@@ -36,13 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'receive_currency',
                 'value' => 'receiveCurrency.name',
             ],
-            
-            // 'receive_currency',
-            // 'status',
             'rate_from',
             'rate_to',
-
-            // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
@@ -51,5 +41,5 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::end(); ?>
-
+    
 </div>
