@@ -1,19 +1,27 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
 use Yii;
-use yii\base\InvalidArgumentException;
-use yii\web\BadRequestHttpException;
+use yii\web\Response;
 use yii\web\Controller;
+use yii\widgets\ActiveForm;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use common\models\Currency;
+use yii\base\ErrorException;
+use common\models\ExchOrder;
+use yii\helpers\ArrayHelper;
 use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
+use yii\filters\AccessControl;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use backend\models\ExchDirection;
+use yii\web\BadRequestHttpException;
+use frontend\models\VerifyEmailForm;
+use frontend\models\ResetPasswordForm;
+use yii\base\InvalidArgumentException;
+use backend\models\ExchDirectionSearch;
+use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResendVerificationEmailForm;
 
 /**
  * Site controller
@@ -73,10 +81,190 @@ class SiteController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
-        // return $this->render('index');
-        return $this->redirect(['/exch-direction']);
+    {   
+        /**
+         * создание модели
+         */
+        $model = new ExchOrder();
 
+        /**
+         * вытягивает все картинки (id => code)
+         */
+        $currenciesCodes = Currency::getCurrenciesCodes();
+
+        /**
+         * from_currencies - первоначальный левый блок отдаете
+         * $model->from_currency - задаем выбранный элемент
+         */
+        $from_currencies = ExchDirection::getFromCurrencies();
+        $model->from_currency = array_key_first($from_currencies);
+        
+        /**
+         * просто пишем запрос в переменную
+         */
+        $request = Yii::$app->request;
+
+        /**
+         * слушаем запрос пост
+         * если изменился выбор в левом блоке - пишем в модель новый выбор
+         */
+        $from = $request->post('from') ? $request->post('from') : $model->from_currency;
+        $model->from_currency = $from;
+        
+        /**
+         * если пришл гет запрос
+         * обновляем from
+         * пишем to
+         * на этом этапе у нас есть данные для поиска направления
+         */
+        if ($request->get('from') && $request->get('to')) {
+            $from = $request->get('from');
+            $to = $request->get('to');
+
+            $checked_direction = ExchDirection::getCourse(
+                array_search($from, $currenciesCodes),
+                array_search($to, $currenciesCodes)
+            );
+
+            $model = new ExchOrder(
+                $checked_direction->min_amount_from,
+                $checked_direction->max_amount_from,
+                $checked_direction->min_amount_to,
+                $checked_direction->max_amount_to,
+            );
+
+            $course = [
+                    'from' => $checked_direction->rate_from,
+                    'to' => $checked_direction->rate_to
+            ];
+
+            $model->from_currency = $from;
+            $model->to_currency = $to;
+            $model->rate = $course['from'] . ' -> ' . $course['to'];
+            $model->status = $model->statuses['not_paid'];
+            $model->ip_address = Yii::$app->request->userIP;
+            
+        } else {
+            $course = null;
+        }
+        
+        /**
+         * $to_currencies - все модели блока Получаете
+         * $to_currencies_list array код => имя валюты
+         * $to_currencies_reserves - array код => резерв
+         */
+        $to_currencies = ExchDirection::getToCurrencies($from);
+        $to_currencies_list = ArrayHelper::map(
+            $to_currencies,
+            'toCurrency.code', 
+            'toCurrency.name'
+        );
+        $to_currencies_reserves = ArrayHelper::map(
+            $to_currencies,
+            'toCurrency.code', 
+            'toCurrency.reserve'
+        );
+
+        /**
+         * $icons массив id валюты => src
+         * $icon_from - код валюты from
+         * $icon_to - код валюты to
+         */ 
+        $icons = Currency::getIcons();
+        $icon_from = $request->get('from');
+        $icon_to = $request->get('to');
+
+        /**
+         * для валидации, проверить нужно ли?
+         */
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+            $secret_id = base64_encode(
+                base64_encode(
+                    base64_encode($model->id)
+                )
+            );
+
+            return $this->redirect(['payment', 'id' => $secret_id]);
+        }
+
+        /**
+         * данные для возврата
+         */
+        $data = compact(
+            'model', 
+            'from_currencies', 
+            'to_currencies_list',
+            'icons',
+            'currenciesCodes',
+            'to_currencies_reserves',
+            'icon_from',
+            'icon_to',
+            'course',
+        );
+
+        /**
+         * рендер и возврат данных
+         */
+        if(Yii::$app->request->getHeaders()->has('X-PJAX')) {
+            return $this->renderAjax('index', $data);
+        } else {
+            return $this->render('index', $data);
+        }
+    }
+
+    public function actionPayment($id) {
+        $id = base64_decode(
+            base64_decode(
+                base64_decode($id)
+            )
+        );
+
+        $model = ExchOrder::findOne($id);
+        
+        return $this->render('payment', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionOrder_view($id) {
+
+        $id = base64_decode(
+            base64_decode(
+                base64_decode($id)
+            )
+        );
+
+        $model = ExchOrder::findOne($id);
+
+        return $this->render('order_view', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionDelete_order($id)
+    {
+        $decoded_id = base64_decode(
+            base64_decode(
+                base64_decode($id)
+            )
+        );
+
+        $model = ExchOrder::findOne($decoded_id);
+        $model->status = $model->statuses['deleted'];
+
+        try {
+            $model->save(false);
+        } catch (ErrorException $e) {
+            throw new \yii\web\HttpException(404, 'Что то пошло не так :(');
+        } finally {
+            return $this->goHome();
+        }
     }
 
     /**
