@@ -17,7 +17,8 @@ class ExchOrderSearch extends ExchOrder
     public function rules()
     {
         return [
-            [['id', 'phone_number'], 'integer'],
+            [['id'], 'integer'],
+            [['phone_number'], 'string', 'max' => 15],
             [['date', 'rate', 'from_currency', 'to_currency', 'from_amount', 'to_amount', 'from_account', 'to_account', 'person', 'email', 'status', 'update_date', 'ip_address'], 'safe'],
         ];
     }

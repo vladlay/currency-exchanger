@@ -42,10 +42,10 @@ class ExchOrder extends \yii\db\ActiveRecord
     /**
      * validator vars
      */
-    private $min_amount_from;
-    private $max_amount_from;
-    private $min_amount_to;
-    private $max_amount_to;
+    public $min_amount_from;
+    public $max_amount_from;
+    public $min_amount_to;
+    public $max_amount_to;
 
     /***
      * construct
@@ -90,7 +90,7 @@ class ExchOrder extends \yii\db\ActiveRecord
             [['rate', 'from_currency', 'to_currency', 'from_amount', 'to_amount', 'from_account', 'to_account', 'person', 'phone_number', 'email', 'status'], 'required'],
             [['date', 'person', 'email', 'update_date', 'rate'], 'string', 'max' => 100],
             [['from_currency', 'to_currency', 'from_account', 'to_account', 'status', 'ip_address'], 'string', 'max' => 30],
-            [['phone_number'], 'integer', 'max' => 15],
+            [['phone_number'], 'string', 'max' => 15],
             [
                 [
                     'from_amount'
