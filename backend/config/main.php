@@ -8,11 +8,17 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => 'Обменка',
     'basePath' => dirname(__DIR__),
     'language'=>'ru-RU',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'container' => [
+        'definitions' => [
+           \yii\widgets\LinkPager::class => \yii\bootstrap4\LinkPager::class,
+        ],
+     ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -44,6 +50,15 @@ return [
             'rules' => [
             ],
         ],
+        'frontUrlManager' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'http://diploma.net',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ],
+        ],
+
     ],
     'params' => $params,
 ];
