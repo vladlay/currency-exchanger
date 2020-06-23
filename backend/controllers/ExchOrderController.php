@@ -124,4 +124,24 @@ class ExchOrderController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionChangeStatus()
+    {
+        $action = Yii::$app->request->post('action');
+        $data = Yii::$app->request->post('data');
+
+        if ($data) {
+            foreach ($data as $item) {
+                $model = $this->findModel($item);
+                // $model->status = $action;
+                $model->status = $model->statuses[$action];
+                $model->save(false);
+
+            }
+        } else $model = 'foo';
+        
+        // return dd($model->errors, $model);
+        return $this->redirect('index');
+
+    }
 }
