@@ -14,6 +14,7 @@ use common\models\LoginForm;
 use yii\filters\AccessControl;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\ContactSearch;
 use backend\models\ExchDirection;
 use yii\web\BadRequestHttpException;
 use frontend\models\VerifyEmailForm;
@@ -140,7 +141,14 @@ class SiteController extends Controller
 
             $model->from_currency = $from;
             $model->to_currency = $to;
-            $model->rate = $course['from'] . ' -> ' . $course['to'];
+            // $model->rate = $course['from'] . ' → ' . $course['to'];
+            $model->rate = $course['from']
+                            . ' '
+                            . $from 
+                            . ' → ' 
+                            . $course['to'] 
+                            . ' '
+                            . $to;
             $model->status = $model->statuses['not_paid'];
             $model->ip_address = Yii::$app->request->userIP;
             
@@ -232,7 +240,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionOrder_view($id) {
+    public function actionOrderView($id) {
 
         $id = base64_decode(
             base64_decode(
@@ -242,9 +250,35 @@ class SiteController extends Controller
 
         $model = ExchOrder::findOne($id);
 
-        return $this->render('order_view', [
+        return $this->render('order-view', [
             'model' => $model,
         ]);
+    }
+
+    public function actionPaidOrder($id)
+    {
+        $id = base64_decode(
+            base64_decode(
+                base64_decode($id)
+            )
+        );
+
+        $model = ExchOrder::findOne($id);
+        $model->status = $model->statuses['in_processing'];
+
+        try {
+            $model->save(false);
+        } catch (ErrorException $e) {
+            throw new \yii\web\HttpException(404, 'Что то пошло не так :(');
+        }
+
+        $secret_id = base64_encode(
+            base64_encode(
+                base64_encode($model->id)
+            )
+        );
+
+        return $this->redirect(['order-view', 'id' => $secret_id]);
     }
 
     public function actionDelete_order($id)
@@ -265,6 +299,27 @@ class SiteController extends Controller
         } finally {
             return $this->goHome();
         }
+    }
+
+    public function actionFaq()
+    {
+        return $this->render('faq');
+    }
+
+    public function actionRules()
+    {
+        return $this->render('rules');
+    }
+
+    public function actionContacts()
+    {
+        $searchModel = new ContactSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('contacts', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
