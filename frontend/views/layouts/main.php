@@ -8,9 +8,9 @@ use yii\bootstrap4\Nav;
 use common\widgets\Alert;
 use yii\bootstrap4\NavBar;
 use frontend\assets\AppAsset;
-use yii\bootstrap4\Breadcrumbs;
 
 AppAsset::register($this);
+$contacts =  \common\models\Contact::getContacts();
 ?>
 
 <?php $this->beginPage() ?>
@@ -31,25 +31,52 @@ AppAsset::register($this);
 
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+        // 'brandLabel' => Yii::$app->name,
+        // 'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-dark bg-dark',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'Главная', 'url' => ['/site/index']],
-        ['label' => 'phpMyAdmin', 'url' => ['/phpmyadmin']],
-        ['label' => 'Gii', 'url' => ['/gii']],
-        ['label' => 'О нас', 'url' => ['/site/about']],
-        ['label' => 'Контакты', 'url' => ['/site/contact']],
-        ['label' => 'Отзывы', 'url' => ['/']],
-        ['label' => 'Админка', 'url' => 'http://admin.diploma.net/'],
-    ];
+    // $menuItems = [
+    //     ['label' => 'Главная', 'url' => ['/site/index']],
+    //     ['label' => 'phpMyAdmin', 'url' => ['/phpmyadmin']],
+    //     ['label' => 'Gii', 'url' => ['/gii']],
+    //     ['label' => 'О нас', 'url' => ['/site/about']],
+    //     ['label' => 'Контакты', 'url' => ['/site/contact']],
+    //     ['label' => 'Отзывы', 'url' => ['/']],
+    //     ['label' => 'Админка', 'url' => 'http://admin.diploma.net/'],
+    // ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        // $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        // $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+
+
+
+
+        echo '<div class="text-white">';
+        foreach ($contacts as $contact) {
+            echo '<span>'
+                . '<i class="' . $contact->icon . ' fa-lg m-1 p-2"></i>'
+                . $contact->value
+                . '</span>';
+        }
+        echo '</div>';
+            
+        $menuItems[] = Html::a(
+                        $text = Html::img('@uploads/'. 'secret.png', ['class' => 'icon mr-3']), 
+                        $url = '/site/login', 
+                        $options = []
+                    );
     } else {
+        $menuItems = [
+            ['label' => 'Главная', 'url' => ['/site/index']],
+            ['label' => 'phpMyAdmin', 'url' => ['/phpmyadmin']],
+            ['label' => 'Gii', 'url' => ['/gii']],
+            // ['label' => 'О нас', 'url' => ['/site/about']],
+            // ['label' => 'Контакты', 'url' => ['/site/contact']],
+            // ['label' => 'Отзывы', 'url' => ['/']],
+            ['label' => 'Админка', 'url' => 'http://admin.diploma.net/'],
+        ];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
@@ -79,15 +106,13 @@ AppAsset::register($this);
 
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#w1-collapse" aria-controls="w1-collapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
-    <div id="w1-collapse" class="collapse navbar-collapse">
+    <div id="w1-collapse" class="collapse navbar-collapse h5 m-0">
         <ul id="w2" class="navbar-nav ml-auto nav">
             <li class="nav-item"><a class="menu-link" href="/">Обмен</a></li>
-            <li class="nav-item"><a class="menu-link" href="/">Отзывы</a></li>
-            <li class="nav-item"><a class="menu-link" href="/">Контакты</a></li>
-            <li class="nav-item"><a class="menu-link" href="/">Помощь</a></li>
-            <li class="nav-item"><a class="menu-link" href="/">Бонусы</a></li>
-            <li class="nav-item"><a class="menu-link" href="/">Войти</a></li>
-            <li class="nav-item"><a class="menu-link" href="/">Создать аккаунт</a></li>
+            <li class="nav-item"><a class="menu-link" href="/review">Отзывы</a></li>
+            <li class="nav-item"><a class="menu-link" href="/site/rules">Правила</a></li>
+            <li class="nav-item"><a class="menu-link" href="/site/contacts">Контакты</a></li>
+            <li class="nav-item"><a class="menu-link" href="/site/faq">FAQ</a></li>
         </ul>
     </div>
 </div>
@@ -95,10 +120,6 @@ AppAsset::register($this);
 
 
     <div class="container pt-4">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            'class' => 'breadcrumb',
-        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

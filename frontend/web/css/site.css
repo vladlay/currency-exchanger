@@ -4,6 +4,14 @@ body {
     font-family: 'TTNorms';
     /* мой стиль */
     background: #fafafa;
+
+    /* background-color: #13a518;
+    background-image: url(https://bitcash.cc/wp-content/uploads/bg-1-299x300-1.png);
+    background-position: right center;
+    background-size: auto;
+    background-repeat: repeat;
+    background-attachment: fixed; */
+    
 }
 
 .wrap {
@@ -275,7 +283,15 @@ input[name="ExchOrder[to_currency]"]:checked + label .reserve {
     color: #3413fd;
 }
 
+.bg-color-main {
+    background-color: #3413fd;
+}
+
 .help-block {
     color: red;
+}
+
+.avatar {
+    width:60px;
 }
 
