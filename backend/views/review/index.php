@@ -15,10 +15,6 @@ $img = Html::img('@uploads/'. 'avatar.png', ['class' => 'avatar mr-3 mt-3 rounde
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Оставить отзыв', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
